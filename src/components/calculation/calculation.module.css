@@ -1,0 +1,89 @@
+.blankDescriptionWindow {
+    @apply w-[39%] float-left  m-1 text-left text-base p-1 shadow-md
+}
+
+.inlineText {
+    @apply font-bold inline
+}
+
+.blankInstructions {
+    @apply w-[59%] float-left h-full m-1 text-justify text-base shadow-md p-1
+}
+
+.divContainerFlex {
+    @apply m-auto md:flex w-full text-center p-1 shadow-md
+}
+
+.blankName {
+    @apply m-auto text-center text-2xl font-bold
+}
+
+.divHalfWidth {
+    @apply w-[49%] float-left m-1 text-left text-base p-1 shadow-md
+}
+
+.table {
+    @apply border-dark-blue w-full border text-base m-auto
+}
+
+.tableCellMini {
+    @apply w-[33%] border border-dark-blue
+}
+
+.blueBorder {
+    @apply border border-dark-blue
+}
+
+.textML {
+    @apply ml-2
+}
+
+.divContainer {
+    @apply shadow-md w-full p-1 mt-1 mb-1
+}
+
+.tableMatrix {
+    @apply border-dark-blue mt-1 border m-auto text-center
+}
+
+.tableMatrixCellInput {
+    @apply w-[30px] text-center border
+}
+
+.tableMatrixCellText {
+    @apply w-[30px] text-center bg-gray-200
+}
+
+.alert {
+    @apply justify-center mt-1 border border-black text-center w-[30%] m-auto
+}
+
+.gridContainer {
+    @apply w-full mt-2 p-1
+}
+
+.stepper {
+    @apply mt-2 mb-2 shadow-md p-1
+}
+
+.tableCoef {
+    @apply text-center border border-dark-blue w-[150px] m-auto
+}
+
+.tableCoefHeader {
+    @apply border border-dark-blue p-1 font-bold text-xl
+}
+
+.tableCoefBody {
+    @apply border border-dark-blue p-1
+}
+
+.chart {
+    @apply w-[250px] h-[300px] m-auto
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
