@@ -69,9 +69,20 @@
     "instruction_norm_step_2": "2. Оцінити важливість альтернатив у відповідності до кожного з критеріїв за шкалою від 0 до 1 (наприклкд 0.5).",
     "instruction_norm_step_3": "3. Натиснути кнопку «Зберегти».",
 
+    "instruction_range_type1": "Дії експерта при прямому введені рангів:",
+    "instruction_range_type1_step1": "1. Оцінити важливість (ранг) альтернатив по шкалі від 1 до n, де n - кількість альтернатив (напириклад 3). Чим важливіше альтернатива - тим менший буде номер рангу.",
+    "instruction_range_type2": "Дії експерта при використанні таблиці порівнянь:",
+    "instruction_range_type2_step1": "1. Оцінити перевагу альтернатив між собою за допомогою шкали порівнянь:",
+    "instruction_range_type2_desc1": "0 - Другий варіант переважає перший варіант.",
+    "instruction_range_type2_desc2": "0,5 - Варіанти рівні між собою.",
+    "instruction_range_type2_desc3": "1 - Перший варіант переважає другий варіант.",
+    "instruction_range_final_step": "2. Натиснути кнопку «Зберегти».",
+
+
     "calculation_criteria_comparison": "Порівняння критеріїв",
     "calculation_alternative_comparison_by": "Порівняння альтернатив за критерієм ",
     "calculation_alternative_comparison": "Порівняння альтернатив за критеріями ",
+    "calculation_alternative_comparison_single": "Порівняння альтернатив",
     "result": "Результат",
 
     "transitivity_error": "Порушена транзитивність!",

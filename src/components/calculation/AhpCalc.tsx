@@ -12,7 +12,8 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { BlankDescription } from "./BlankDescription";
 import { AhpInstructions } from "./instructions/AhpInstructions";
 import styles from './calculation.module.css';
-import { CritAndAltDescription } from "./CritAndAltDescription";
+import { AlternativesDescription} from "./AlternativesDescription";
+import { CriteriaDescription } from "./CriteriaDescription";
 
 export function AhpCalc() {
     const { t } = useTranslation();
@@ -174,7 +175,10 @@ export function AhpCalc() {
                 <BlankDescription/>
                 <AhpInstructions/>
             </div>
-            <CritAndAltDescription/>
+            <div className={styles.divContainerFlex}>
+                <CriteriaDescription/>
+                <AlternativesDescription/>
+            </div>
             <div className="w-full">
             <h2 className="text-center m-2">{t('calculation_criteria_comparison')}</h2>
                 {isEdit && <div className={styles.divContainer}>

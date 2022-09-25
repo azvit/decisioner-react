@@ -77,6 +77,13 @@ export interface BlankNorm {
     rankedScores: number[]
 }
 
+export interface BlankRange {
+    rankedScores: number[],
+    cArr: number[],
+    aArr: number[],
+    sumRank: number
+}
+
 export interface BlankForm {
     name: string,
     method: string,
@@ -149,3 +156,9 @@ export const matrixReverseMap = new Map([
     ['1/8', '8'],
     ['1/9', '9']
 ]);
+
+export const matrixRangeRevereMap = new Map([
+    ['0', '1'],
+    ['1', '0'],
+    ['0.5', '0.5']
+])

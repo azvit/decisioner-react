@@ -1,26 +1,25 @@
-export class RangeService {
-  run (ranks: number[], sums: number[] = []) {
+  export const rangeRun = async (ranks: number[], sums: number[] = []) => {
     let sumRank = 0;
     let sArr = [];
     let aMax = Math.max.apply(null, ranks);
     console.log(aMax)
     for (let i = 0; i < ranks.length; i++) {
-      sArr.push(aMax - ranks[i]);
-      sumRank += ranks[i];
+      sArr.push(aMax - Number(ranks[i]));
+      sumRank += Number(ranks[i]);
     }
     console.log(sums);
     console.log({rankedScores: sArr, cArr: sums,  sumRank: sumRank})
     return {rankedScores: sArr, cArr: sums, aArr: ranks, sumRank: sumRank};
   }
 
-  runWithCompares (matrix: [any[]]) {
+  export const rangeRunWithCompares = async (matrix: [any[]]) => {
     let sums = [];
     let aArr = [];
     for (let i = 0; i < matrix.length; i++) {
       let rowSum = 0;
       for (let j = 0; j < matrix[0].length; j++) {
         if (j !== i) {
-          rowSum += matrix[i][j]
+          rowSum += Number(matrix[i][j])
         }
       }
       sums.push(rowSum);
@@ -32,9 +31,8 @@ export class RangeService {
     }
     console.log(aArr)
     console.log(sums)
-    return this.run(aArr, sums);
+    return rangeRun(aArr, sums);
   }
-}
 
 /*
 runWithComparison (matrix: any[]) {

@@ -19,7 +19,7 @@
 }
 
 .divHalfWidth {
-    @apply w-[49%] float-left m-1 text-left text-base p-1 shadow-md
+    @apply w-[49%] float-left m-1 text-left text-base p-1 shadow-md m-auto
 }
 
 .table {
@@ -51,7 +51,7 @@
 }
 
 .tableMatrixCellText {
-    @apply w-[30px] text-center bg-gray-200
+    @apply w-[30px] text-center bg-gray-200 m-auto
 }
 
 .alert {

@@ -69,9 +69,19 @@
     "instruction_norm_step_2": "2. Evaluate the importance of the alternatives by criterias on a scale of 0 to 1 (e.g. 0.5).",
     "instruction_norm_step_3": "3. Press the 'save' button.",
 
+    "instruction_range_type1": "How expert acts with direct input of the ranks:",
+    "instruction_range_type1_step1": "1. Evaluate the importance (rank) of alternatives on a scale from 1 to n, where n is the number of alternatives (for example, 3). The more important the alternative, the lower it's rank number.",
+    "instruction_range_type2": "How expert acts with comparison table:",
+    "instruction_range_type2_step1": "1. Evaluate the superiority of the alternatives among themselves for the help of the scale of differences:",
+    "instruction_range_type2_desc1": "0 - The second option superior the first.",
+    "instruction_range_type2_desc2": "0,5 - The options equal to each other.",
+    "instruction_range_type2_desc3": "1 - The first option superior the second.",
+    "instruction_range_final_step": "2. Press the 'save' button.",
+
     "calculation_criteria_comparison": "The comparison of the criteria",
     "calculation_alternative_comparison_by": "The comparison of the alternatives by criteria",
     "calculation_alternative_comparison": "The comparison of the alternatives by criterias",
+    "calculation_alternative_comparison_single": "The comparison of the alternatives",
 
     "transitivity_error": "The transitivity is broken!",
     "transitivity_success": "The transitivity is OK!",

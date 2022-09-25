@@ -1,7 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { AhpCalc } from "../components/calculation/AhpCalc";
 import { NormCalc } from "../components/calculation/NormCalc";
-import { AHP_METHOD, NORM_METHOD } from "../constants";
+import { RangeCalc } from "../components/calculation/RangeCalc";
+import { AHP_METHOD, NORM_METHOD, RANGE_METHOD } from "../constants";
 import { useAppSelector } from "../hook/redux";
 
 export function CalculationPage () {
@@ -17,6 +18,10 @@ export function CalculationPage () {
             {
                 (currentBlank!.method === NORM_METHOD) &&
                 <NormCalc/>
+            }
+            {
+                (currentBlank!.method === RANGE_METHOD) &&
+                <RangeCalc/>
             }
         </>
     )

@@ -2,13 +2,13 @@ import { Tabs, Tab, Box, Typography, TextField, Step, StepLabel, Stepper, Button
 import { useFormik } from "formik";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { AHP_METHOD, METHODS, NORM_METHOD, RANGE_METHOD } from "../constants";
+import { AHP_METHOD, METHODS, NORM_METHOD, RANGE_METHOD, SINGLE_FACTOR_METHODS } from "../constants";
 import { useAppDispatch, useAppSelector } from "../hook/redux";
 import { BlankForm, IBlank } from "../models/models";
 import * as Yup from 'yup';
 import { useInput, useSelect, useTextArea } from "../hook/input";
 import React from "react";
-import { Add, Delete, Edit } from "@mui/icons-material";
+import { Add, ArrowForward, Delete, Edit } from "@mui/icons-material";
 import { questionModal } from "../swal/index";
 import { createBlank, editBlank } from "../store/actions/BlankAction";
 import { useNavigate } from "react-router-dom";
@@ -57,14 +57,35 @@ export function BlankPage() {
         setItem(prev => ({...prev, [event.target.name]: event.target.value}))
     }
 
+    const isSingleFactorMethod = () => {
+        return SINGLE_FACTOR_METHODS.indexOf(formik.values.method) !== -1
+    }
+
+    const criteriaValidation = () => {
+        if (isSingleFactorMethod()) {
+            return Yup.array();
+        } else {
+            return Yup.array().min(2).max(15);
+        }
+    }
+
     const handleNext = () => {
         toggleToCreate();
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        if (isSingleFactorMethod()) {
+            setActiveStep((prevActiveStep) => prevActiveStep + 2)
+        } else {
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
+        
     };
 
     const handleBack = () => {
         toggleToCreate();
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        if (isSingleFactorMethod()) {
+            setActiveStep((prevActiveStep) => prevActiveStep - 2)
+        } else {
+            setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        }
     };
 
     const clearItem = () => {
@@ -149,36 +170,41 @@ export function BlankPage() {
     }
 
     const sendBlank = () => {
-        const newBlank: BlankForm = {
-            name: formik.values.name,
-            method: formik.values.method,
-            blank: {
-                aim: formik.values.aim,
-                description: formik.values.description,
-                criteria: formik.values.criteria,
-                items: formik.values.items,
-                criteriaDescription: formik.values.criteriaDescription,
-                itemsDescription: formik.values.itemsDescription
+        if (isSingleFactorMethod() || (formik.values.criteria.length >= 2)) {
+            const newBlank: BlankForm = {
+                name: formik.values.name,
+                method: formik.values.method,
+                blank: {
+                    aim: formik.values.aim,
+                    description: formik.values.description,
+                    criteria: formik.values.criteria,
+                    items: formik.values.items,
+                    criteriaDescription: formik.values.criteriaDescription,
+                    itemsDescription: formik.values.itemsDescription
+                }
             }
+            dispatch(createBlank(newBlank, userId));
         }
-        console.log(newBlank)
-        dispatch(createBlank(newBlank, userId));
+        
     }
 
     const saveBlank = () => {
-        const editedBlank: BlankForm = {
-            name: formik.values.name,
-            method: formik.values.method,
-            blank: {
-                aim: formik.values.aim,
-                description: formik.values.description,
-                criteria: formik.values.criteria,
-                items: formik.values.items,
-                criteriaDescription: formik.values.criteriaDescription,
-                itemsDescription: formik.values.itemsDescription
+        if (isSingleFactorMethod() || (formik.values.criteria.length >= 2)) {
+            const editedBlank: BlankForm = {
+                name: formik.values.name,
+                method: formik.values.method,
+                blank: {
+                    aim: formik.values.aim,
+                    description: formik.values.description,
+                    criteria: formik.values.criteria,
+                    items: formik.values.items,
+                    criteriaDescription: formik.values.criteriaDescription,
+                    itemsDescription: formik.values.itemsDescription
+                }
             }
+            dispatch(editBlank(editedBlank, currentBlank?._id))
         }
-        dispatch(editBlank(editedBlank, currentBlank?._id))
+        
     }
 
     const formik = useFormik({
@@ -201,10 +227,9 @@ export function BlankPage() {
                 .required(t('required_field')),
             description: Yup.string()
                 .required(t('required_field')),
-            criteria: Yup.array()
-                .min(2),
+            criteria: Yup.array(),
             items: Yup.array()
-                .min(2)
+                .min(2).max(15)
         }),
         onSubmit: () => {
             if (isNew) {
@@ -231,14 +256,24 @@ export function BlankPage() {
         <div className="text-center m-auto">
             <form onSubmit={formik.handleSubmit}>
                 <Stepper activeStep={activeStep}>
-                    {steps.map((label, index) => {
-                    const stepProps: { completed?: boolean } = {};
-                    return (
-                        <Step key={label} {...stepProps}>
-                        <StepLabel >{label}</StepLabel>
+                        <Step key={t('aim')}>
+                        <StepLabel >{t('aim')}</StepLabel>
                         </Step>
-                    );
-                    })}
+                        {
+                            isSingleFactorMethod() && 
+                            <Step key={t('criteria')}>
+                                <StepLabel ><ArrowForward/></StepLabel>
+                            </Step>
+                        }
+                        {
+                            !isSingleFactorMethod() &&
+                            <Step key={t('criteria')}>
+                                <StepLabel >{t('criteria')}</StepLabel>
+                            </Step>
+                        }
+                        <Step key={t('alternatives')}>
+                            <StepLabel >{t('alternatives')}</StepLabel>
+                        </Step>
                 </Stepper>
                 <React.Fragment>
                     {activeStep === 0 && 

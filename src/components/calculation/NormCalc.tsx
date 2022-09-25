@@ -1,6 +1,5 @@
 import { AhpInstructions } from "./instructions/AhpInstructions";
 import { BlankDescription } from "./BlankDescription";
-import { CritAndAltDescription } from "./CritAndAltDescription";
 import styles from './calculation.module.css';
 import { ChangeEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -15,6 +14,8 @@ import ReactEcharts from "echarts-for-react";
 import { getOptions, isMax, round } from "../../calculation-service";
 import { Save, Edit } from "@mui/icons-material";
 import { editBlank } from "../../store/actions/BlankAction";
+import { AlternativesDescription } from "./AlternativesDescription";
+import { CriteriaDescription } from "./CriteriaDescription";
 
 export function NormCalc() {
 
@@ -110,7 +111,10 @@ export function NormCalc() {
                 <BlankDescription/>
                 <NormInstructions/>
             </div>
-            <CritAndAltDescription/>
+            <div className={styles.divContainerFlex}>
+                <CriteriaDescription/>
+                <AlternativesDescription/>
+            </div>
             <div className="w-full">
                 <h2 className="text-center m-2">{t('calculation_criteria_comparison')}</h2>
                 {isEdit && <div className={styles.divContainer}>

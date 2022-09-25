@@ -18,4 +18,13 @@ export const METHODS = [
     AHP_METHOD,
     NORM_METHOD,
     RANGE_METHOD
+];
+
+export const SINGLE_FACTOR_METHODS = [
+    RANGE_METHOD
 ]
+
+export const RANGE_METHOD_MODES = {
+    COMPARE: 'compare',
+    DIRECT: 'direct'
+}
