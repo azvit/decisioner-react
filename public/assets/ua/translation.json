@@ -83,6 +83,15 @@
     "calculation_alternative_comparison_by": "Порівняння альтернатив за критерієм ",
     "calculation_alternative_comparison": "Порівняння альтернатив за критеріями ",
     "calculation_alternative_comparison_single": "Порівняння альтернатив",
+    "calculation_range_factor": "№ фактора",
+    "calculation_range_sum": "Сума балів сі",
+    "calculation_range_rank_a": "Ранг аі",
+    "calculation_range_rank_s": "Ранг перетворений Si",
+    "calculation_range_rank_A": "Ранг А",
+    "calculation_range_rank_S": "Ранг перетворений S",
+    "calculation_range_direct": "Я хочу ввести ранги вручну!",
+    "calculation_range_compare": "Я хочу розрахувати ранги за таблицею порівнянь!",
+
     "result": "Результат",
 
     "transitivity_error": "Порушена транзитивність!",

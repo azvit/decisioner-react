@@ -1,20 +1,17 @@
-import { AhpInstructions } from "./instructions/AhpInstructions";
 import { BlankDescription } from "./BlankDescription";
 import { AlternativesDescription} from "./AlternativesDescription";
 import styles from './calculation.module.css';
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hook/redux";
-import { NormInstructions } from "./instructions/NormInstructions";
-import { BlankNorm, BlankRange, IBlank, matrixRangeRevereMap, matrixReverseMap } from "../../models/models";
-import { ahpCalc } from "../../methods/ahp.service";
-import { normCalc } from "../../methods/norm.service";
-import { Button, Grid, Step, StepLabel, Stepper } from "@mui/material";
+import { BlankRange, IBlank, matrixRangeRevereMap} from "../../models/models";
+
+import { Button} from "@mui/material";
 import ReactEcharts from "echarts-for-react";
 import { getOptions, isMax, round } from "../../calculation-service";
 import { Save, Edit } from "@mui/icons-material";
-import { editBlank, setBlank } from "../../store/actions/BlankAction";
+import { editBlank } from "../../store/actions/BlankAction";
 import { RangeInstructions } from "./instructions/RangeInstructions";
 import { rangeRun, rangeRunWithCompares } from "../../methods/range.service";
 import { RANGE_METHOD_MODES } from "../../constants";
@@ -148,10 +145,10 @@ export function RangeCalc() {
             <div className="w-full text-center">
                 <h2 className="text-center m-2">{t('calculation_alternative_comparison_single')}</h2>
                 {
-                    (mode === RANGE_METHOD_MODES.COMPARE && isEdit) && <Button onClick={handleDirectSwitch} className="text-center" variant="contained">Я хочу ввести ранги вручну!</Button>
+                    (mode === RANGE_METHOD_MODES.COMPARE && isEdit) && <Button onClick={handleDirectSwitch} className="text-center" variant="contained">{t('calculation_range_direct')}</Button>
                 }
                 {
-                    (mode === RANGE_METHOD_MODES.DIRECT && isEdit) && <Button onClick={handleCompareSwitch} className="text-center" variant="contained">Я хочу розрахувати ранги за таблицею порівнянь!</Button>
+                    (mode === RANGE_METHOD_MODES.DIRECT && isEdit) && <Button onClick={handleCompareSwitch} className="text-center" variant="contained">{t('calculation_range_compare')}</Button>
                 }
                 
                 <div className={styles.divContainer}>
@@ -160,17 +157,17 @@ export function RangeCalc() {
                         <table className={styles.tableMatrix}>
                         <tr>
                             <td rowSpan={2} className='border'>
-                                <p>№ фактора</p>
+                                <p>{t('calculation_range_factor')}</p>
                             </td>
                             <td rowSpan={2} className='border'>
-                                <p>Найменування фактора</p>
+                                <p>{t('alternatives')}</p>
                             </td>
                             <td colSpan={currentBlankRange.blank.items.length} rowSpan={1} className='border'>
-                                <p>№ фактора</p>
+                                <p>{t('calculation_range_factor')}</p>
                             </td>
-                            <td rowSpan={2} className='border'><p>Сума балів сі</p></td>
-                            <td rowSpan={2} className='border'><p>Ранг аi</p></td>
-                            <td rowSpan={2} className='border'><p>Ранг перетворений Si</p></td>
+                            <td rowSpan={2} className='border'><p>{t('calculation_range_sum')}</p></td>
+                            <td rowSpan={2} className='border'><p>{t('calculation_range_rank_a')}</p></td>
+                            <td rowSpan={2} className='border'><p>{t('calculation_range_rank_s')}</p></td>
                         </tr>
                         <tr>
                             {
@@ -226,13 +223,13 @@ export function RangeCalc() {
                         <table className={styles.tableMatrix}>
                             <tr>
                                 <td className='border'>
-                                    <p>Назва альтернативи</p>
+                                    <p>{t('alternatives')}</p>
                                 </td>
                                 <td className='border'>
-                                    <p>Ранг А</p>
+                                    <p>{t('calculation_range_rank_A')}</p>
                                 </td>
                                 <td className='border'>
-                                    <p>Ранг перетворений S</p>
+                                    <p>{t('calculation_range_rank_S')}</p>
                                 </td>
                             </tr>
                             {
