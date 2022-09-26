@@ -14,6 +14,7 @@ import { AhpInstructions } from "./instructions/AhpInstructions";
 import styles from './calculation.module.css';
 import { AlternativesDescription} from "./AlternativesDescription";
 import { CriteriaDescription } from "./CriteriaDescription";
+import { Hierarchy } from "../Hierarchy";
 
 export function AhpCalc() {
     const { t } = useTranslation();
@@ -174,6 +175,9 @@ export function AhpCalc() {
             <div className={styles.divContainerFlex}>
                 <BlankDescription/>
                 <AhpInstructions/>
+            </div>
+            <div className={styles.divContainer}>
+                <Hierarchy blank={currentBlankAhp.blank}/>
             </div>
             <div className={styles.divContainerFlex}>
                 <CriteriaDescription/>

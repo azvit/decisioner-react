@@ -1,4 +1,4 @@
-import { Tabs, Tab, Box, Typography, TextField, Step, StepLabel, Stepper, Button, IconButton } from "@mui/material";
+import { Box, Typography, Step, StepLabel, Stepper, Button, IconButton } from "@mui/material";
 import { useFormik } from "formik";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -6,12 +6,12 @@ import { AHP_METHOD, METHODS, NORM_METHOD, RANGE_METHOD, SINGLE_FACTOR_METHODS }
 import { useAppDispatch, useAppSelector } from "../hook/redux";
 import { BlankForm, IBlank } from "../models/models";
 import * as Yup from 'yup';
-import { useInput, useSelect, useTextArea } from "../hook/input";
 import React from "react";
 import { Add, ArrowForward, Delete, Edit } from "@mui/icons-material";
 import { questionModal } from "../swal/index";
 import { createBlank, editBlank } from "../store/actions/BlankAction";
 import { useNavigate } from "react-router-dom";
+import { Hierarchy } from "../components/Hierarchy";
 
 interface BlankItem {
     name: string,
@@ -32,7 +32,7 @@ export function BlankPage() {
 
     const emptyBlank: BlankForm = {
         name: '',
-        method: 'ahp',
+        method: AHP_METHOD,
         blank: {
             aim: '',
             items: [],
@@ -61,14 +61,6 @@ export function BlankPage() {
         return SINGLE_FACTOR_METHODS.indexOf(formik.values.method) !== -1
     }
 
-    const criteriaValidation = () => {
-        if (isSingleFactorMethod()) {
-            return Yup.array();
-        } else {
-            return Yup.array().min(2).max(15);
-        }
-    }
-
     const handleNext = () => {
         toggleToCreate();
         if (isSingleFactorMethod()) {
@@ -87,6 +79,42 @@ export function BlankPage() {
             setActiveStep((prevActiveStep) => prevActiveStep - 1);
         }
     };
+
+    const formik = useFormik({
+        initialValues: {
+           name: blank.name,
+           aim: blank.blank.aim,
+           method: blank.method,
+           description: blank.blank.description,
+           criteria: blank.blank.criteria,
+           items: blank.blank.items,
+           itemsDescription: blank.blank.itemsDescription,
+           criteriaDescription: blank.blank.criteriaDescription
+        },
+        validationSchema: Yup.object({
+            name: Yup.string()
+                .required(t('required_field')),
+            aim: Yup.string()
+                .required(t('required_field')),
+            method: Yup.string()
+                .required(t('required_field')),
+            description: Yup.string()
+                .required(t('required_field')),
+            criteria: Yup.array().when('method', {
+                is: (method: string) => !SINGLE_FACTOR_METHODS.includes(method),
+                then: Yup.array().min(2).max(15)
+            }),
+            items: Yup.array()
+                .min(2).max(15)
+        }),
+        onSubmit: () => {
+            if (isNew) {
+                sendBlank();
+            } else {
+                saveBlank();
+            }
+        }
+    });
 
     const clearItem = () => {
         setItem({name: '', description: '', index: 16})
@@ -107,10 +135,18 @@ export function BlankPage() {
         clearItem();
     }
 
+    useEffect(()=>{
+       console.log(formik.isValid);
+       console.log(formik.dirty)
+    }, [formik])
+
     const addCriteria = () => {
         if (item.name && item.description) {
-            formik.values.criteria.push(item.name);
-            formik.values.criteriaDescription.push(item.description);
+            let data = formik.values;
+            data.criteria.push(item.name);
+            data.criteriaDescription.push(item.description);
+            formik.setFieldValue('criteria', data.criteria);
+            formik.setFieldValue('criteriaDescription', data.criteriaDescription);
             updateCriteriaList();
             clearItem();
         }
@@ -118,8 +154,11 @@ export function BlankPage() {
 
     const editCriteria = () => {
         if (item.name && item.description) {
-            formik.values.criteria[item.index] = item.name;
-            formik.values.criteriaDescription[item.index] = item.description;
+            let data = formik.values;
+            data.criteria[item.index] = item.name;
+            data.criteriaDescription[item.index] = item.description;
+            formik.setFieldValue('criteria', data.criteria);
+            formik.setFieldValue('criteriaDescription', data.criteriaDescription);
             updateCriteriaList();
             clearItem();
             setIsItemNew(true)
@@ -129,8 +168,11 @@ export function BlankPage() {
     const deleteCriteria = (index: number) => {
         questionModal(t('delete_this_criteria')).then(result => {
             if (result.isConfirmed) {
-                formik.values.criteria.splice(index, 1);
-                formik.values.criteriaDescription.splice(index, 1);
+                let data = formik.values;
+                data.criteria.splice(index, 1);
+                data.criteriaDescription.splice(index, 1);
+                formik.setFieldValue('criteria', data.criteria);
+                formik.setFieldValue('criteriaDescription', data.criteriaDescription);
                 updateCriteriaList();
                 clearItem();
             }
@@ -139,9 +181,13 @@ export function BlankPage() {
     }
 
     const addItem = () => {
+        console.log(formik.values)
         if (item.name && item.description) {
-            formik.values.items.push(item.name);
-            formik.values.itemsDescription.push(item.description);
+            let data = formik.values;
+            data.items.push(item.name);
+            data.itemsDescription.push(item.description);
+            formik.setFieldValue('items', data.items);
+            formik.setFieldValue('itemsDescription', data.itemsDescription);
             updateItemsList();
             clearItem();
         }
@@ -149,8 +195,11 @@ export function BlankPage() {
 
     const editItem = () => {
         if (item.name && item.description) {
-            formik.values.items[item.index] = item.name;
-            formik.values.itemsDescription[item.index] = item.description;
+            let data = formik.values;
+            data.items[item.index] = item.name;
+            data.itemsDescription[item.index] = item.description;
+            formik.setFieldValue('items', data.items);
+            formik.setFieldValue('itemsDescription', data.itemsDescription);
             updateItemsList();
             clearItem();
             setIsItemNew(true)
@@ -160,8 +209,11 @@ export function BlankPage() {
     const deleteItem = (index: number) => {
         questionModal(t('delete_this_alternative')).then(result => {
             if (result.isConfirmed) {
-                formik.values.items.splice(index, 1);
-                formik.values.itemsDescription.splice(index, 1);
+                let data = formik.values;
+                data.items.splice(index, 1);
+                data.itemsDescription.splice(index, 1);
+                formik.setFieldValue('items', data.items);
+                formik.setFieldValue('itemsDescription', data.itemsDescription);
                 updateItemsList();
                 clearItem();
             }
@@ -189,7 +241,6 @@ export function BlankPage() {
     }
 
     const saveBlank = () => {
-        if (isSingleFactorMethod() || (formik.values.criteria.length >= 2)) {
             const editedBlank: BlankForm = {
                 name: formik.values.name,
                 method: formik.values.method,
@@ -202,44 +253,8 @@ export function BlankPage() {
                     itemsDescription: formik.values.itemsDescription
                 }
             }
-            dispatch(editBlank(editedBlank, currentBlank?._id))
-        }
-        
+            dispatch(editBlank(editedBlank, currentBlank?._id))   
     }
-
-    const formik = useFormik({
-        initialValues: {
-           name: blank.name,
-           aim: blank.blank.aim,
-           method: blank.method,
-           description: blank.blank.description,
-           criteria: blank.blank.criteria,
-           items: blank.blank.items,
-           itemsDescription: blank.blank.itemsDescription,
-           criteriaDescription: blank.blank.criteriaDescription
-        },
-        validationSchema: Yup.object({
-            name: Yup.string()
-                .required(t('required_field')),
-            aim: Yup.string()
-                .required(t('required_field')),
-            method: Yup.string()
-                .required(t('required_field')),
-            description: Yup.string()
-                .required(t('required_field')),
-            criteria: Yup.array(),
-            items: Yup.array()
-                .min(2).max(15)
-        }),
-        onSubmit: () => {
-            if (isNew) {
-                sendBlank();
-            } else {
-                saveBlank();
-            }
-        },
-        
-    })
 
     const [criteriaList, setCriteriaList] = useState(formik.values.criteria);
     const [itemsList, setItemsList] = useState(formik.values.items);
@@ -322,7 +337,6 @@ export function BlankPage() {
                                     onBlur={formik.handleBlur}
                                     maxLength={2000} className=" w-full border "/>
                             </div>
-                            <input/>
                         </div>
                     </div>
                     }
@@ -445,10 +459,14 @@ export function BlankPage() {
                     </div>
                     }
                     <div className="w-full text-center p-2">
-                        <Button type="submit" variant="contained">
-                            {isNew && <span><Add/>{t('create_expertise_button')}</span>}
-                            {!isNew && <span><Edit/>{t('save_changes_button')}</span>}
-                        </Button>
+                        {isNew && 
+                            <Button type="submit" disabled={(!(formik.isValid && formik.dirty))} variant="contained">
+                                <span><Add/>{t('create_expertise_button')}</span>
+                            </Button>
+                        }
+                        {!isNew && <Button type="submit" disabled={(!formik.isValid)} variant="contained">
+                            <span><Edit/>{t('save_changes_button')}</span>
+                        </Button>}
                     </div>
                     <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                         <Button
@@ -463,6 +481,11 @@ export function BlankPage() {
                         {activeStep === steps.length - 1 ? null : <Button onClick={handleNext}>{t('next_button')}</Button>}
                     </Box>
                 </React.Fragment>
+                {(formik.values.method === AHP_METHOD) && (formik.values.aim !== '') && (formik.values.criteria.length !== 0) && <div className="w-full">
+                    <Hierarchy 
+                        blank={{criteria: formik.values.criteria, items: formik.values.items, aim: formik.values.aim}}
+                    />
+                </div>}
             </form>
                 
         </div>

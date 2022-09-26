@@ -55,6 +55,8 @@
     "are_you_sure": "Are you sure?",
     "success": "Success!",
 
+    "hierarchy_title": "Hierarchy of the problem",
+
     "instruction_act": "How expert acts:",
     "instruction_ahp_step_1": "1. Evaluate the superiority of the criteria and alternatives among themselves for the help of the scale of differences:",
     "instruction_ahp_1": "1 - The options equal to each other.",
