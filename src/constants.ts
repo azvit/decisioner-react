@@ -2,6 +2,8 @@ export const TOKEN_KEY = 'token';
 
 export const USER_KEY = 'user';
 
+export const EXPIRES_AT_KEY = 'expires_at';
+
 export const ROLE_KEY = 'role';
 
 export const USER_ID_KEY = 'userIdKey';

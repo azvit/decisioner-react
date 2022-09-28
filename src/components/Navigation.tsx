@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '../hook/redux';
 import React from 'react';
 import { logout } from '../store/actions/AuthActions';
 import { useTranslation } from 'react-i18next';
+import AuthVerify from '../common/auth-verify';
 
 export function Navigation()  {
     
@@ -18,8 +19,7 @@ export function Navigation()  {
     const dispatch = useAppDispatch();
     const { t } = useTranslation();
     const logoutHandler = (event: React.MouseEvent) => {
-        event.preventDefault();
-
+        //event.preventDefault();
         dispatch(logout());
     }
 
@@ -106,6 +106,7 @@ export function Navigation()  {
                 </ListItem>
             </List>
           }
+          <AuthVerify logOut={logoutHandler}/>
         </div>
       );
 }

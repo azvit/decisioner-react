@@ -1,6 +1,7 @@
 import { IUser, ServerResponse } from "../../models/models"
-import {ROLE_KEY, TOKEN_KEY, USER_ID_KEY} from "../../constants"
+import {EXPIRES_AT_KEY, ROLE_KEY, TOKEN_KEY, USER_ID_KEY} from "../../constants"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import moment from "moment"
 
 interface AuthState {
     isLoggedIn: boolean
@@ -39,9 +40,11 @@ export const authSlice = createSlice({
             state.token = action.payload.token;
             state.loading = false;
             state.userId = action.payload.user._id;
+            let expiresAt = moment().add(action.payload.expiresIn, 'second');
 
             localStorage.setItem(USER_ID_KEY, action.payload.user._id);
             localStorage.setItem(TOKEN_KEY, action.payload.token);
+            localStorage.setItem(EXPIRES_AT_KEY, expiresAt.toString())
             localStorage.setItem(ROLE_KEY, action.payload.role);
         },
         fetchError(state, action: PayloadAction<ServerResponse | Error>) {
