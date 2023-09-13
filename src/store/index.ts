@@ -1,14 +1,20 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import UserReducer from "./slices/UserSlice";
-import AuthReducer from "./slices/AurhSlice";
+import UserSlice from "./slices/UserSlice";
+import AuthSlice from "./slices/AurhSlice";
 import BlankSlice from "./slices/BlankSlice";
 import BlanksSlice from "./slices/BlanksSlice";
+import GroupExpertisesSlice from "./slices/GroupExpertisesSlice";
+import GroupExpertiseSlice from "./slices/GroupExpertiseSlice";
+import ExpertsSlice from "./slices/ExpertsSlice";
 
 const rootReducer = combineReducers({
-    auth: AuthReducer,
-    user: UserReducer,
+    auth: AuthSlice,
+    user: UserSlice,
     blank: BlankSlice,
-    blanks: BlanksSlice
+    blanks: BlanksSlice,
+    groupExpertises: GroupExpertisesSlice,
+    groupExpertise: GroupExpertiseSlice,
+    experts: ExpertsSlice
 });
 
 export function setupStore() {

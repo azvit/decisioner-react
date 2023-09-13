@@ -20,6 +20,9 @@ import { BlanksPage } from './pages/BlanksPage';
 import { LANG_KEY } from './constants';
 import { BlankPage } from './pages/BlankPage';
 import { CalculationPage } from './pages/CalculationPage';
+import { GroupExpertisesPage } from './pages/GroupExpertisesPage';
+import { GroupExpertisePage } from './pages/GroupExpertisePage';
+import {InvitationsPage} from "./pages/Invitations";
 
 
 const drawerWidth = 240;
@@ -68,15 +71,15 @@ export function App(props: Props) {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ 
-                mr: 2, 
+            sx={{
+                mr: 2,
                 display: { sm: 'none' }
             }}
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Responsive drawer
+            Decisioner
           </Typography>
           <div className='ml-auto'>
             <select value={lang} onChange={languageHandler} className='text-black'>
@@ -115,7 +118,7 @@ export function App(props: Props) {
           sx={{
             display: { xs: 'none', sm: 'block' },
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-            
+
           }}
           open
         >
@@ -128,12 +131,15 @@ export function App(props: Props) {
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
-        {isLoggedIn && 
+        {isLoggedIn &&
           <Routes>
             <Route path='/' element={<MainPage/>}/>
             <Route path='/blanks-list' element={<BlanksPage/>}/>
             <Route path='/blank' element={<BlankPage/>}/>
             <Route path='/calculation' element={<CalculationPage/>}/>
+            <Route path='/group-expertise-list' element={<GroupExpertisesPage/>}/>
+            <Route path='/group-expertise' element={<GroupExpertisePage/>}/>
+            <Route path='/group-expertise/invitations' element={<InvitationsPage/>}/>
           </Routes>
         }
         {!isLoggedIn && <AuthPage/>}

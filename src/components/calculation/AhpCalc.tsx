@@ -81,15 +81,18 @@ export function AhpCalc() {
             input[j][i] = matrixReverseMap.get(input[i][j]);
         }
         setInputMatrix(input);
-        console.log(inputMatrix);
+       
         saveCriteria(i, j);   
     }
 
-    const calculate = (blankCopy: any) => {
+    const calculate = (blankCopy: IBlank<BlankAhp>) => {
         ahpCalc(blankCopy.blank).then(result => {
+            console.log(isCalc)
+            blankCopy = JSON.parse(JSON.stringify(blankCopy));
             blankCopy.result = result;
             setCurrentBlankAhp(blankCopy);
             setIsCalcc(true)
+            console.log(isCalc)
         });   
     }
 
@@ -124,12 +127,13 @@ export function AhpCalc() {
 
     useEffect(() => {
         if (!isCalc) {
+           
             calculate(currentBlankAhp);
         }
         
         let matrix: any[][] = [];
         let itemMatrix: any[][][] = [];
-        console.log('----')
+     
             for (let i = 0; i < (currentBlankAhp.blank.criteria.length ?? 0); i++) {
                 matrix.push([]);
                 itemMatrix.push([]);
@@ -167,8 +171,8 @@ export function AhpCalc() {
             }
         setInputItemMatrix(itemMatrix);
         setInputMatrix(matrix);
+       
     }, [])
-    
     return (
         <div id="body" className="m-auto">
             <h2 className={styles.blankName}>{currentBlankAhp.name}</h2>
@@ -331,7 +335,7 @@ export function AhpCalc() {
                 <React.Fragment>
                     <div className={styles.divContainer}>
                     <h2 className="text-center m-2">{t('calculation_alternative_comparison_by')} "{currentBlankAhp.blank.criteria[activeStep]}"</h2>
-                    {isEdit && <div className={styles.divContainer}>
+                    {isEdit && inputItemMatrix[activeStep] && <div className={styles.divContainer}>
                             <table className={styles.tableMatrix}>
                                 <tr className="border">
                                     <td className="border">

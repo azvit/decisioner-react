@@ -4,7 +4,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AHP_METHOD, METHODS, NORM_METHOD, RANGE_METHOD, SINGLE_FACTOR_METHODS } from "../constants";
 import { useAppDispatch, useAppSelector } from "../hook/redux";
-import { BlankForm, IBlank } from "../models/models";
+import { BlankForm, GroupExpertiseForm, IBlank, IGroupExpertise } from "../models/models";
 import * as Yup from 'yup';
 import React from "react";
 import { Add, ArrowForward, Delete, Edit } from "@mui/icons-material";
@@ -12,29 +12,30 @@ import { questionModal } from "../swal/index";
 import { createBlank, editBlank } from "../store/actions/BlankAction";
 import { useNavigate } from "react-router-dom";
 import { Hierarchy } from "../components/Hierarchy";
+import { createGroupExpertise, editGroupExpertise } from "../store/actions/GroupExpertiseAction";
 
-interface BlankItem {
+interface GroupExpertiseItem {
     name: string,
     description: string,
     index: number
 }
 
-export function BlankPage() {
+export function GroupExpertisePage() {
     const { t } = useTranslation();
-    const {completed} = useAppSelector(state => state.blank)
+    const {completed, currentGroupExpertise} = useAppSelector(state => state.groupExpertise)
     const navigate = useNavigate()
 
     useEffect(() => {
         if (completed) {
-            navigate('/blanks-list')
+            navigate('/group-expertise-list')
         }
     }, [completed])
 
-    const emptyBlank: BlankForm = {
+    const emptyGroupExpertise: GroupExpertiseForm = {
         name: '',
-        method: AHP_METHOD,
-        blank: {
+        template: {
             aim: '',
+            method: AHP_METHOD,
             items: [],
             itemsDescription: [],
             description: '',
@@ -42,13 +43,11 @@ export function BlankPage() {
             criteriaDescription: []
         }
     }
-
-    const {currentBlank} = useAppSelector(state => state.blank)
-    const isNew = !Boolean(currentBlank);
-    const [blank, setBlank] = useState<IBlank<any> | BlankForm>(JSON.parse(JSON.stringify(currentBlank)) ?? emptyBlank);
+    const isNew = !Boolean(currentGroupExpertise);
+    const [groupExpertise, setGroupExpertise] = useState<IGroupExpertise<any> | GroupExpertiseForm>(JSON.parse(JSON.stringify(currentGroupExpertise)) ?? emptyGroupExpertise);
     const [activeStep, setActiveStep] = useState(0);
     const steps = [t('aim'), t('criterias'), t('alternatives')];
-    const [item, setItem] = useState<BlankItem>({name: '', description: '', index: 16})
+    const [item, setItem] = useState<GroupExpertiseItem>({name: '', description: '', index: 16})
     const [isItemNew, setIsItemNew] = useState(true);
     const dispatch = useAppDispatch();
     const { userId } = useAppSelector(state => state.auth)
@@ -82,14 +81,14 @@ export function BlankPage() {
 
     const formik = useFormik({
         initialValues: {
-           name: blank.name,
-           aim: blank.blank.aim,
-           method: blank.method,
-           description: blank.blank.description,
-           criteria: blank.blank.criteria,
-           items: blank.blank.items,
-           itemsDescription: blank.blank.itemsDescription,
-           criteriaDescription: blank.blank.criteriaDescription
+           name: groupExpertise.name,
+           aim: groupExpertise.template.aim,
+           method: groupExpertise.template.method,
+           description: groupExpertise.template.description,
+           criteria: groupExpertise.template.criteria,
+           items: groupExpertise.template.items,
+           itemsDescription: groupExpertise.template.itemsDescription,
+           criteriaDescription: groupExpertise.template.criteriaDescription
         },
         validationSchema: Yup.object({
             name: Yup.string()
@@ -109,9 +108,9 @@ export function BlankPage() {
         }),
         onSubmit: () => {
             if (isNew) {
-                sendBlank();
+                sendGroupExpertise();
             } else {
-                saveBlank();
+                saveGroupExpertise();
             }
         }
     });
@@ -181,6 +180,7 @@ export function BlankPage() {
     }
 
     const addItem = () => {
+        console.log(formik.values)
         if ((item.name && item.description) && (formik.values.items.indexOf(item.name) === -1)) {
             let data = formik.values;
             data.items.push(item.name);
@@ -220,13 +220,13 @@ export function BlankPage() {
 
     }
 
-    const sendBlank = () => {
+    const sendGroupExpertise = () => {
         if (isSingleFactorMethod() || (formik.values.criteria.length >= 2)) {
-            const newBlank: BlankForm = {
+            const newGroupExpertise: GroupExpertiseForm = {
                 name: formik.values.name,
-                method: formik.values.method,
-                blank: {
+                template: {
                     aim: formik.values.aim,
+                    method: formik.values.method,
                     description: formik.values.description,
                     criteria: formik.values.criteria,
                     items: formik.values.items,
@@ -234,17 +234,17 @@ export function BlankPage() {
                     itemsDescription: formik.values.itemsDescription
                 }
             }
-            dispatch(createBlank(newBlank, userId));
+            dispatch(createGroupExpertise(newGroupExpertise));
         }
 
     }
 
-    const saveBlank = () => {
-            const editedBlank: BlankForm = {
+    const saveGroupExpertise = () => {
+            const editedGroupExpertise: GroupExpertiseForm = {
                 name: formik.values.name,
-                method: formik.values.method,
-                blank: {
+                template: {
                     aim: formik.values.aim,
+                    method: formik.values.method,
                     description: formik.values.description,
                     criteria: formik.values.criteria,
                     items: formik.values.items,
@@ -252,7 +252,7 @@ export function BlankPage() {
                     itemsDescription: formik.values.itemsDescription
                 }
             }
-            dispatch(editBlank(editedBlank, currentBlank?._id))
+            dispatch(editGroupExpertise(editedGroupExpertise, currentGroupExpertise?._id))
     }
 
     const [criteriaList, setCriteriaList] = useState(formik.values.criteria);

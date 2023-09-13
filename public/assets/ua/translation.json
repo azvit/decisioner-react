@@ -14,7 +14,7 @@
     "required_field": "Заповніть поле",
     "password_is_not_valid_min": "Пароль повинен мати хоча б 8 символів",
     "password_is_not_valid_max": "Пароль не повинен мати більше ніж 25 символів",
-    
+
     "blanks_page_header": "Експертизи",
     "blanks_page_create_button": "Створити нову експертизу",
     "blank_item_edit_button": "Редагувати",
@@ -25,6 +25,8 @@
     "blank_item_creation_date": "Створено ",
     "blank_delete_modal": "Видалити цю експертизу?",
     "blank_confirm_modal": "Підтвердити цю експертизу? Ви бильше не будете в змозі зробити будь які зміни після цього!",
+
+    "group_invite_button": "Запросити експертів",
 
     "ahp": "Метод аналізу ієрархій",
     "norm": "Метод нормування",

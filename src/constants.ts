@@ -30,3 +30,10 @@ export const RANGE_METHOD_MODES = {
     COMPARE: 'compare',
     DIRECT: 'direct'
 }
+
+export const TABLE_INIT = {
+    LIMIT: 1,
+    SKIP: 0,
+    SEARCH: '',
+    FILTER: ''
+}

@@ -42,6 +42,31 @@ export interface IBlank<T> {
     result: T
 }
 
+export interface IGroupExpertise<T> {
+    _id: string,
+    creator: string,
+    isClosed: boolean,
+    name: string,
+    expertsWeight: [],
+    experts: IUser[],
+    invitedExperts: [string],
+    blanks: [],
+    template: ITemplate,
+    creationDate: Date,
+    blank: BlankEvaluations,
+    result: T
+}
+
+export interface ITemplate {
+    aim: string,
+    description: string,
+    items: string[],
+    criteria: string[],
+    itemsDescription: string[],
+    criteriaDescription: string[],
+    method: string
+}
+
 export interface BlankEvaluations {
     aim: string,
     description: string,
@@ -95,6 +120,25 @@ export interface BlankForm {
         criteria: string[],
         criteriaDescription: string[]
     }
+}
+
+export interface GroupExpertiseForm {
+    name: string,
+    template: {
+        aim: string,
+        description: string,
+        method: string,
+        criteria: string[],
+        criteriaDescription: string[],
+        items: string[],
+        itemsDescription: string[]
+    }
+}
+
+export interface InvitationForm {
+    senderName: string,
+    expertiseId: string,
+    expertId: string
 }
 
 export const matrixInputMap = new Map([
@@ -162,3 +206,5 @@ export const matrixRangeRevereMap = new Map([
     ['1', '0'],
     ['0.5', '0.5']
 ])
+
+export interface ExpertTableData { id: number; name: string; email: string; phone: string; degree: string; academicStatus: string; direction: string; activitySphere: string; }

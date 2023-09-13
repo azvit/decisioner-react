@@ -52,7 +52,6 @@ export function RangeCalc() {
             input [j][i] = matrixRangeRevereMap.get(value)
         }
         setInputMatrix(input);
-        console.log(inputMatrix);
         saveItems(i, j, input);
     }
 
@@ -60,7 +59,6 @@ export function RangeCalc() {
         let input = JSON.parse(JSON.stringify(inputRanks));
         input[i] = value;
         setInputRanks(input);
-        console.log(input)
         saveRanks(input);
     }
     
@@ -83,7 +81,6 @@ export function RangeCalc() {
     }, [completed])
 
     const saveItems = (i: number, j: number, input: any) => {
-        console.log(input[i][j])
         if (matrixRangeRevereMap.get(input[i][j])) {
             blankCopy = getBlankCopy();
             blankCopy.blank.criteriaItemRank = input;
@@ -106,7 +103,7 @@ export function RangeCalc() {
     }
 
     const calculate = (blankCopy: any) => {
-        console.log('sc')
+
         rangeRun(blankCopy.blank.criteriaRank).then((result: any) => {
             blankCopy.result = result;
             setCurrentBlankRange(blankCopy);
@@ -115,10 +112,8 @@ export function RangeCalc() {
     }
 
     const calculateWithCompares = (blankCopy: any) => {
-        console.log('cccc')
         rangeRunWithCompares(blankCopy.blank.criteriaItemRank).then((result: any) => {
             blankCopy.result = result;
-            console.log(result)
             setCurrentBlankRange(blankCopy);
             setIsCalcc(true)
         });   

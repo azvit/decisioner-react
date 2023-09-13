@@ -91,7 +91,6 @@ export function NormCalc() {
     const calculate = (blankCopy: any) => {
         normCalc(blankCopy.blank.criteriaRank, blankCopy.blank.criteriaItemRank).then(result => {
             blankCopy.result = result;
-            console.log(result)
             setCurrentBlankNorm(blankCopy);
             setIsCalcc(true)
         });   

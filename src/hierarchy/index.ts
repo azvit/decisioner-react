@@ -5,7 +5,6 @@ import {EChartsOption} from "echarts/types/dist/echarts";
   let x: number[] = [0];
 
 export const build = (entity: any, title: string) => {
-    console.log(entity)
     data = [{
       name: entity.aim,
       x: startX,
@@ -55,7 +54,6 @@ export const build = (entity: any, title: string) => {
           }
         }]
       }
-      console.log(chartOptions)
     return chartOptions;
   }
 

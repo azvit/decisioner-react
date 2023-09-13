@@ -10,6 +10,7 @@ interface AuthState {
     loading: boolean
     error: string
     userId: string
+    user: IUser | null
 }
 
 interface AuthPayLoad {
@@ -25,7 +26,8 @@ const initialState: AuthState = {
     loading: false,
     error: '',
     userId: localStorage.getItem(USER_ID_KEY) ?? '',
-    role: localStorage.getItem(ROLE_KEY) ?? ''
+    role: localStorage.getItem(ROLE_KEY) ?? '',
+    user: null
 }
 
 export const authSlice = createSlice({
@@ -40,6 +42,8 @@ export const authSlice = createSlice({
             state.token = action.payload.token;
             state.loading = false;
             state.userId = action.payload.user._id;
+            state.user = action.payload.user;
+            state.role = action.payload.user.role;
             let expiresAt = moment().add(action.payload.expiresIn, 'second');
 
             localStorage.setItem(USER_ID_KEY, action.payload.user._id);

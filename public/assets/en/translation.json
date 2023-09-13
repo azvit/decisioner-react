@@ -26,6 +26,8 @@
     "blank_delete_modal": "Delete this expertise?",
     "blank_confirm_modal": "Confirm this expertise? You won't be able to make any changes after that!",
 
+    "group_invite_button": "Invite experts",
+
     "ahp": "Analytic hierarchy process",
     "norm": "Normalize method",
     "range": "Range method",

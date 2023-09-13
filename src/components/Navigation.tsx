@@ -59,7 +59,7 @@ export function Navigation()  {
                         </ListItemText>
                     </ListItemButton>
                 </ListItem>
-                <ListItem disablePadding className='hover:bg-blue-800'>
+                <ListItem component={Link} to='/group-expertise-list' disablePadding className='hover:bg-blue-800'>
                     <ListItemButton>
                         <ListItemIcon>
                             <Help style={{ color: 'white' }}/>
