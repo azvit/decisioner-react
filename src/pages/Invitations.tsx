@@ -13,19 +13,30 @@ export function InvitationsPage() {
     const dispatch = useAppDispatch();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { experts, loading, error, count } = useAppSelector(state => state.experts);
+    const { experts, loading, error, count, completed, inviting } = useAppSelector(state => state.experts);
     const { user } = useAppSelector(state => state.auth);
     const {currentGroupExpertise} = useAppSelector(state => state.groupExpertise)
     const [expertList, setExpertList] = useState(experts ?? [])
     const [page, setPage] = useState(TABLE_INIT.SKIP);
     const [rowsPerPage, setRowsPerPage] = useState(TABLE_INIT.LIMIT);
+    const [isInviting, setIsInviting] = useState<number|null>(null);
 
     const invite = (i: number) => {
-        dispatch(sendInvitation({senderName: user!.name, expertiseId: currentGroupExpertise!._id, expertId: expertList[i]._id}))
-        let curExp = JSON.parse(JSON.stringify(currentGroupExpertise));
-        curExp.invitedExperts.push(expertList[i]._id);
-        dispatch(setGroupExpertise(curExp));
+        setIsInviting(i);
     }
+    useEffect(() => {
+        if (isInviting) {
+            dispatch(sendInvitation({senderName: user!.name, expertiseId: currentGroupExpertise!._id, expertId: expertList[isInviting]._id}))
+            let curExp = JSON.parse(JSON.stringify(currentGroupExpertise));
+            curExp.invitedExperts.push(expertList[isInviting]._id);
+            dispatch(setGroupExpertise(curExp));
+        }
+    }, [isInviting])
+    useEffect(() => {
+        if (!inviting) {
+            setIsInviting(null);
+        }
+    }, [inviting])
     const checkInvited = (index:number) => {
         for (let i = 0; i < currentGroupExpertise!.experts.length; i++) {
             if (currentGroupExpertise!.experts[i]._id === expertList[index]._id) {
@@ -59,7 +70,6 @@ export function InvitationsPage() {
 
     useEffect(() => {
         setExpertList(experts);
-        console.log(expertList)
     }, [experts]);
 
     const columns: GridColDef[] = [
@@ -132,7 +142,12 @@ export function InvitationsPage() {
                     {expert.activitySphere}
                 </TableCell>
                 <TableCell>
-                    {checkInvited(index) && <p>Invited</p>}
+                    {(checkInvited(index) && (isInviting !== index)) && <Button disabled>
+                            Invited
+                        </Button>}
+                        {(isInviting === index) && inviting && <Button disabled>
+                            <p>Inviting <CircularProgress size={20}/></p>
+                        </Button>}
                     {!checkInvited(index) && 
                         <Button onClick={() => invite(index)}>
                             Invite

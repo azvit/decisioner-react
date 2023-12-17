@@ -23,6 +23,7 @@ import { CalculationPage } from './pages/CalculationPage';
 import { GroupExpertisesPage } from './pages/GroupExpertisesPage';
 import { GroupExpertisePage } from './pages/GroupExpertisePage';
 import {InvitationsPage} from "./pages/Invitations";
+import { InvitationAccept } from './pages/InvitationAccept';
 
 
 const drawerWidth = 240;
@@ -79,7 +80,7 @@ export function App(props: Props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Decisioner
+            Expertisa
           </Typography>
           <div className='ml-auto'>
             <select value={lang} onChange={languageHandler} className='text-black'>
@@ -140,6 +141,7 @@ export function App(props: Props) {
             <Route path='/group-expertise-list' element={<GroupExpertisesPage/>}/>
             <Route path='/group-expertise' element={<GroupExpertisePage/>}/>
             <Route path='/group-expertise/invitations' element={<InvitationsPage/>}/>
+            <Route path='/group-expertise/invitation' element={<InvitationAccept/>}/>
           </Routes>
         }
         {!isLoggedIn && <AuthPage/>}

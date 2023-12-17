@@ -6,6 +6,7 @@ interface ExpertsState {
     count: number
     loading: boolean,
     completed: boolean,
+    inviting: boolean
     error: string
 }
 
@@ -18,6 +19,7 @@ const initialState: ExpertsState = {
     experts: [],
     count: 0,
     loading: false,
+    inviting: false,
     completed: false,
     error: ''
 }
@@ -34,15 +36,20 @@ export const expertsSlice = createSlice({
         fetching(state) {
             state.loading = true;
         },
+        inviting(state) {
+            state.inviting = true;
+            console.log('inviting =' + state.inviting)
+        },
         error(state, action: PayloadAction<ServerResponse>) {
             state.loading = false;
             state.error = action.payload.message
         },
         success(state) {
-            state.completed = true;
+            state.inviting = false
             setTimeout(() => {
                 state.completed = false
             }, 1000)
+            state.completed = false
         }
     }
 })
