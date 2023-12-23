@@ -7,6 +7,8 @@ import { blankSlice } from "../slices/BlankSlice";
 import { blanksSlice } from "../slices/BlanksSlice";
 import { groupExpertiseSlice } from "../slices/GroupExpertiseSlice";
 import { groupExpertisesSlice } from "../slices/GroupExpertisesSlice";
+import { createBrowserHistory } from "history";
+export const history = createBrowserHistory();
 
 export const setGroupExpertise = (groupExpertise: IGroupExpertise<any>) => {
     return (dispatch: AppDispatch) => {
@@ -63,17 +65,29 @@ export const editGroupExpertise = (changes: any, id: string | undefined) => {
     }
 }
 
+export const confirmGroupExpertise = (id: string | undefined) => {
+    return (dispatch: AppDispatch) => {
+        axios.put(`group-expertises/confirm/${id}`).then((res) => {
+            successAlert();
+            dispatch(blankSlice.actions.complete());
+        }).catch(res => {
+            errorAlert(res.response.data.message);
+        }) 
+    }
+}
+
 export const resetGroupExpertise = () => {
     return (dispatch: AppDispatch) => {
         dispatch(groupExpertiseSlice.actions.resetGroupExpertise());
     }
 }
 
-export const calculateGroupExpertise = (id: string, expertsWeight: [] = []) => {
+export const calculateGroupExpertise = (id: string, expertsWeight: number[] = []) => {
     return(dispatch: AppDispatch) => {
+        dispatch(groupExpertiseSlice.actions.agregating());
         axios.get(`agregation/${id}`, {params: {expertsWeight}}).then((res) => {
             dispatch(groupExpertiseSlice.actions.setGroupExpertise(res.data))
-            dispatch(groupExpertiseSlice.actions.complete);
+            dispatch(groupExpertiseSlice.actions.complete());
         }).catch(res => {
             errorAlert(res.response.data.message)
         })

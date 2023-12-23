@@ -4,12 +4,14 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 interface GroupExpertiseState {
     currentGroupExpertise: IGroupExpertise<any> | null,
-    completed: boolean
+    completed: boolean,
+    loading: boolean
 }
 
 const initialState: GroupExpertiseState = {
     currentGroupExpertise: null,
-    completed: false
+    completed: false,
+    loading: false
 }
 
 export const groupExpertiseSlice = createSlice({
@@ -26,9 +28,14 @@ export const groupExpertiseSlice = createSlice({
         },
         complete(state) {
             state.completed = true;
-            setTimeout(() => {
+            state.loading = false
+            /*setTimeout(() => {
                 state.completed = false
-            }, 1000)
+            }, 1000)*/
+        },
+        agregating(state) {
+            state.completed = false;
+            state.loading = true
         }
     }
 })

@@ -9,7 +9,7 @@ import Moment from 'react-moment';
 import { useNavigate } from "react-router-dom";
 import { deleteBlank, editBlank, getBlanks, resetBlank, setBlank } from "../store/actions/BlankAction";
 import { questionModal } from "../swal";
-import { calculateGroupExpertise, deleteGroupExpertise, editGroupExpertise, getGroupExpertises, resetGroupExpertise, setGroupExpertise } from "../store/actions/GroupExpertiseAction";
+import { calculateGroupExpertise, confirmGroupExpertise, deleteGroupExpertise, editGroupExpertise, getGroupExpertises, resetGroupExpertise, setGroupExpertise } from "../store/actions/GroupExpertiseAction";
 
 
 export function GroupExpertisesPage() {
@@ -42,8 +42,8 @@ export function GroupExpertisesPage() {
     }
 
     const goToResult = (index: number) => {
-        dispatch(calculateGroupExpertise(groupExpertiseList[index]._id))
-        //navigate(`/calculation?isEdit=false`);
+        dispatch(setGroupExpertise(groupExpertiseList[index]))
+        navigate(`/group-expertise/result`);
     }
 
     const groupExpertiseDelete = (index: number) => {
@@ -57,10 +57,10 @@ export function GroupExpertisesPage() {
         })
     }
 
-    const confirmGroupExpertise = (index: number) => {
+    const confirmGroupExp = (index: number) => {
         questionModal(t("blank_confirm_modal")).then(res => {
             if (res.isConfirmed) {
-                dispatch(editGroupExpertise({isClosed: true}, groupExpertiseList[index]._id));
+                dispatch(confirmGroupExpertise(groupExpertiseList[index]._id));
                 setTimeout(() => {
                     dispatch(getGroupExpertises(userId))
                 }, 500)
@@ -112,7 +112,7 @@ export function GroupExpertisesPage() {
                                         <CardActions>
                                             <Button onClick={() => {goToGroupExpertise(index)}} variant="contained" size="small"><Edit/>{t('blank_item_edit_button')}</Button>
                                             <Button onClick={() => {groupExpertiseDelete(index)}} variant="contained" size="small"><Delete/>{t('blank_item_delete_button')}</Button>
-                                            <Button onClick={() => {confirmGroupExpertise(index)}} variant="contained" size="small">{t('blank_item_confirm_button')}</Button>
+                                            <Button onClick={() => {confirmGroupExp(index)}} variant="contained" size="small">{t('blank_item_confirm_button')}</Button>
                                         </CardActions>
 
                                 </Card>

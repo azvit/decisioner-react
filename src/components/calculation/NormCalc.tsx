@@ -37,9 +37,9 @@ export function NormCalc() {
         setInputMatrix(input);
     }
 
-    const inputMatrixItemChangeHandler = (i: number, j:number, value: any) => {
+    const inputMatrixItemChangeHandler = (i: number, value: any) => {
         let input = JSON.parse(JSON.stringify(inputItemMatrix));
-        input[i][j] = value;
+        input[i][0] = value;
         setInputItemMatrix(input);
     }
 
@@ -89,7 +89,7 @@ export function NormCalc() {
 
 
     const calculate = (blankCopy: any) => {
-        normCalc(blankCopy.blank.criteriaRank, blankCopy.blank.criteriaItemRank).then(result => {
+        normCalc(blankCopy.blank.criteriaItemRank).then(result => {
             blankCopy.result = result;
             setCurrentBlankNorm(blankCopy);
             setIsCalcc(true)
@@ -111,78 +111,10 @@ export function NormCalc() {
                 <NormInstructions/>
             </div>
             <div className={styles.divContainerFlex}>
-                <CriteriaDescription/>
                 <AlternativesDescription/>
             </div>
-            <div className="w-full">
-                <h2 className="text-center m-2">{t('calculation_criteria_comparison')}</h2>
-                {isEdit && <div className={styles.divContainer}>
-                    <table className={styles.tableMatrix}>
-                        <thead className="text-center">
-                            <tr className="border">
-                                <td className="border">
-                                    {t('criterias')}
-                                </td>
-                                <td className="border"> 
-                                    {t('weight')}
-                                </td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                inputMatrix.map((input, index) => <tr>
-                                    <td className="border text-left">
-                                        <p className={styles.textML}>{currentBlankNorm.blank.criteria[index]}</p>
-                                    </td>
-                                    <td className="border">
-                                        <input name={index.toString()} onChange={(e) => {inputMatrixChangeHandler(index, e.target.value)}} className={styles.tableMatrixCellInput} value={input}/>
-                                    </td>
-                                </tr>)
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                    
-                }
+            <div className="w-full">   
             </div>
-            {
-                isCalc && <div className={styles.divContainer}>
-                    <Grid sx={{flexGrow: 1}} container spacing={0.5} className="w-full mt-2 p-1" justifyContent={'space-around'} alignItems={'center'}>
-                    
-                    <Grid item xs={3}>
-                    <table className={styles.table}>
-                        <tr >
-                            <th className={styles.blueBorder}>
-                               {t('criterias')}
-                            </th>
-                            <th className={styles.blueBorder}>
-                                {t('weight')}
-                            </th>
-                        </tr>
-                        {
-                            currentBlankNorm.result.criteriaScores.map((score, index) => <tr className={(isMax(score, currentBlankNorm.result.criteriaScores))? 'bg-cyan-300' : ''}>
-                                <td className={styles.blueBorder}>
-                                <p className={styles.textML}>{currentBlankNorm.blank.items[index]}</p>
-                                </td>
-                                <td className={styles.blueBorder}>
-                                    <p className={styles.textML}>{round(score)}</p>
-                                </td>
-                            </tr>)
-                        }
-                    </table>
-                    </Grid>
-                    <Grid item xs={3} className='border'>
-                        <div className={styles.chart}>
-                            <ReactEcharts
-                                option={getChartData(currentBlankNorm.blank.criteria, currentBlankNorm.result.criteriaScores)}
-                                notMerge={true}
-                                lazyUpdate={true}
-                            />
-                        </div> 
-                    </Grid>
-                </Grid>
-                </div>
-            }
             <div className={styles.divContainer}>
                 <h2 className="text-center m-2">{t('calculation_alternative_comparison')}</h2>
                 {
@@ -192,11 +124,9 @@ export function NormCalc() {
                                 <td className="border">
                                     {t('alternatives')}
                                 </td>
-                                {
-                                    currentBlankNorm.blank.criteria.map(criteria => <td className="border">
-                                        {criteria}
-                                    </td>)
-                                }
+                                <td>
+                                    {t('weight')}
+                                </td>
                             </tr>
                             {
                                 currentBlankNorm.blank.items.map((item, i) => <tr>
@@ -204,9 +134,9 @@ export function NormCalc() {
                                         <p className={styles.textML}>{item}</p>
                                     </td>
                                     {
-                                        currentBlankNorm.blank.criteria.map((criteria, j) => <td className="border">
-                                            <input className={styles.tableMatrixCellInput} onChange={(e) => {inputMatrixItemChangeHandler(i, j, e.target.value)}} value={inputItemMatrix[i][j]}/>
-                                        </td>)
+                                        <td className="border">
+                                            <input className={styles.tableMatrixCellInput} onChange={(e) => {inputMatrixItemChangeHandler(i, e.target.value)}} value={inputItemMatrix[i][0]}/>
+                                        </td>
                                     }
                                 </tr>)
                             }

@@ -293,7 +293,7 @@ export function GroupExpertisePage() {
                     {activeStep === 0 &&
                         <div className="flex border shadow-md mt-2">
                         <div className="text-left w-[50%] border shadow-md p-2">
-                            <div className="w-full text-3xl mb-2">
+                            <div className="w-full text-lg mb-2">
                                 <span> {formik.touched.name && formik.errors.name ? (<p className="text-red-600">{t('name_input')} {formik.errors.name}</p>) : <p>{t('name_input')} </p>}</span>
                                 <input type="text"
                                     id="name"
@@ -303,18 +303,18 @@ export function GroupExpertisePage() {
                                     onBlur={formik.handleBlur}
                                     className=" w-full border "/>
                             </div>
-                            <div className="w-full text-3xl mt-2">
+                            <div className="w-full text-lg mt-2">
                             <span> {formik.touched.aim && formik.errors.aim ? (<p className="text-red-600">{t('aim_input')} {formik.errors.aim}</p>) : <p>{t('aim_input')} </p>}</span>
-                                <input id="aim"
+                                    <textarea id="aim"
                                     name="aim"
                                     value={formik.values.aim}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                    className=" w-full border "/>
+                                    maxLength={2000} className=" w-full border "/>
                             </div>
                         </div>
                         <div className="text-left w-[50%] border shadow-md p-2">
-                            <div className="w-full text-3xl  mb-2">
+                            <div className="w-full text-lg  mb-2">
                             {t('method_input')}
                                 <select id="method"
                                     name="method"
@@ -327,7 +327,7 @@ export function GroupExpertisePage() {
                                     <option value={RANGE_METHOD}>{t("range")}</option>
                                 </select>
                             </div>
-                            <div className="w-full text-3xl mt-2 mb-2">
+                            <div className="w-full text-lg mt-2 mb-2">
                             <span> {formik.touched.description && formik.errors.description ? (<p className="text-red-600">{t('description_input')} {formik.errors.description}</p>) : <p>{t('description_input')} </p>}</span>
                                 <textarea id="description"
                                     name="description"
@@ -371,7 +371,7 @@ export function GroupExpertisePage() {
                             <div className="text-center p-2"><Button variant="contained" onClick={toggleToCreate}><Add/>{t('add_new_criteria_button')}</Button></div>
                         </div>
                         <div className="text-left w-[60%] border shadow-md p-2">
-                            <div className="w-full text-3xl  mb-2">
+                            <div className="w-full text-lg  mb-2">
                                {t('name_input')}
                                 <input id="criteria_name"
                                     name="name"
@@ -381,7 +381,7 @@ export function GroupExpertisePage() {
 
                                 </input>
                             </div>
-                            <div className="w-full text-3xl mt-2 mb-2">
+                            <div className="w-full text-lg mt-2 mb-2">
                                 {t('description_input')}
                                 <input
                                     id="criteria_description"
@@ -430,7 +430,7 @@ export function GroupExpertisePage() {
                             <div className="text-center p-2"><Button variant="contained" onClick={toggleToCreate}><Add/>{t('add_new_alternative_button')}</Button></div>
                         </div>
                         <div className="text-left w-[60%] border shadow-md p-2">
-                            <div className="w-full text-3xl  mb-2">
+                            <div className="w-full text-lg  mb-2">
                                {t('name_input')}
                                 <input id="criteria_name"
                                     name="name"
@@ -440,7 +440,7 @@ export function GroupExpertisePage() {
 
                                 </input>
                             </div>
-                            <div className="w-full text-3xl mt-2 mb-2">
+                            <div className="w-full text-lg mt-2 mb-2">
                                 {t('description_input')}
                                 <input
                                     id="criteria_description"

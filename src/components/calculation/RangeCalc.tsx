@@ -15,6 +15,7 @@ import { editBlank } from "../../store/actions/BlankAction";
 import { RangeInstructions } from "./instructions/RangeInstructions";
 import { rangeRun, rangeRunWithCompares } from "../../methods/range.service";
 import { RANGE_METHOD_MODES } from "../../constants";
+import { setCommentRange } from "typescript";
 
 export function RangeCalc() {
 
@@ -30,6 +31,7 @@ export function RangeCalc() {
     const [inputMatrix, setInputMatrix] = useState<any[][]>(currentBlankRange.blank.criteriaItemRank);
     const [inputRanks, setInputRanks] = useState<any[]>(currentBlankRange.blank.criteriaRank);
     const [mode, setMode] = useState(currentBlankRange.blank.criteria[0]);
+    const [show, setShow] = useState(false);
 
     const getBlankCopy = () => JSON.parse(JSON.stringify(currentBlankRange));
 
@@ -125,6 +127,24 @@ export function RangeCalc() {
         }
     }, [])
 
+    useEffect(() => {
+      if (!currentBlankRange?.result) {
+        let rankedScores = [];
+        let copy = JSON.parse(JSON.stringify(currentBlankRange));
+        for (let i = 0; i <= currentBlankRange.blank.items.length; i++) {
+            rankedScores.push(0)
+        }
+        copy.result = {
+            cArr: rankedScores,
+            sumRank: 0,
+            aArr: rankedScores,
+            rankedScores: rankedScores
+        }
+        copy.result.rankedScores = rankedScores;
+        setCurrentBlankRange(copy)
+      }
+      setShow(true)  
+    })
 
     return(
         <div id="body" className="m-auto">
@@ -136,19 +156,11 @@ export function RangeCalc() {
             <div className={styles.divContainerFlex}>
                 <AlternativesDescription/>
             </div>
-            
-            <div className="w-full text-center">
-                <h2 className="text-center m-2">{t('calculation_alternative_comparison_single')}</h2>
-                {
-                    (mode === RANGE_METHOD_MODES.COMPARE && isEdit) && <Button onClick={handleDirectSwitch} className="text-center" variant="contained">{t('calculation_range_direct')}</Button>
-                }
-                {
-                    (mode === RANGE_METHOD_MODES.DIRECT && isEdit) && <Button onClick={handleCompareSwitch} className="text-center" variant="contained">{t('calculation_range_compare')}</Button>
-                }
-                
+            {
+                show ? <div className="w-full text-center">
+                <h2 className="text-center m-2">{t('calculation_alternative_comparison_single')}</h2>   
                 <div className={styles.divContainer}>
-                    {
-                        mode === RANGE_METHOD_MODES.COMPARE &&
+                    
                         <table className={styles.tableMatrix}>
                         <tr>
                             <td rowSpan={2} className='border'>
@@ -212,43 +224,13 @@ export function RangeCalc() {
                             </tr>)
                         }
                     </table>
-                    }
-                    {
-                        mode === RANGE_METHOD_MODES.DIRECT &&
-                        <table className={styles.tableMatrix}>
-                            <tr>
-                                <td className='border'>
-                                    <p>{t('alternatives')}</p>
-                                </td>
-                                <td className='border'>
-                                    <p>{t('calculation_range_rank_A')}</p>
-                                </td>
-                                <td className='border'>
-                                    <p>{t('calculation_range_rank_S')}</p>
-                                </td>
-                            </tr>
-                            {
-                                currentBlankRange.blank.items.map((item, i) => <tr className={(isMax(currentBlankRange.result.rankedScores[i], currentBlankRange.result.rankedScores)) ? 'bg-cyan-300' : ''}>
-                                    <td className='border'>
-                                        <span title={currentBlankRange.blank.itemsDescription[i]}>
-                                            <p>{item}</p>
-                                        </span>
-                                    </td>
-                                    <td className='border bg-white'>
-                                        {isEdit && <input type='number' onChange={(e) => {inputRanksChangeHandler(i, e.target.value)}} className={styles.tableMatrixCellInput} value={inputRanks[i]}/>}
-                                        {!isEdit && <p className={styles.tableMatrixCellText}>{inputRanks[i]}</p>}
-                                    </td>
-                                    <td className='border'>
-                                        <p>{round(currentBlankRange.result.rankedScores[i])}</p>
-                                    </td>
-                                </tr>)
-                            }
-                        </table>
-                    }
+                    
                 </div>
                     
                 
-            </div>
+            </div> : <></>
+            }
+            
             {
                 isCalc && <div className={styles.divContainer}>
                     <ReactEcharts

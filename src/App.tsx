@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, Router } from 'react-router-dom';
 import { Navigation } from './components/Navigation'
 import AppBar from '@mui/material/AppBar';
@@ -14,7 +14,7 @@ import i18next, { changeLanguage } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector';
 import I18NextHttpBackend from 'i18next-http-backend';
-import { useAppSelector } from './hook/redux';
+import { useAppDispatch, useAppSelector } from './hook/redux';
 import { AuthPage } from './pages/AuthPage';
 import { BlanksPage } from './pages/BlanksPage';
 import { LANG_KEY } from './constants';
@@ -24,6 +24,8 @@ import { GroupExpertisesPage } from './pages/GroupExpertisesPage';
 import { GroupExpertisePage } from './pages/GroupExpertisePage';
 import {InvitationsPage} from "./pages/Invitations";
 import { InvitationAccept } from './pages/InvitationAccept';
+import { GroupResultPage } from './pages/GroupExpertiseResult';
+import { getUser } from './store/actions/AuthActions';
 
 
 const drawerWidth = 240;
@@ -39,7 +41,7 @@ interface Props {
 export function App(props: Props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
+  const dispatch = useAppDispatch();
   const { isLoggedIn } = useAppSelector(state => state.auth);
 
   const handleDrawerToggle = () => {
@@ -54,6 +56,13 @@ export function App(props: Props) {
   }
 
   const container = window !== undefined ? () => window().document.body : undefined;
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(getUser());
+    }
+    
+  }, [])
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -134,7 +143,7 @@ export function App(props: Props) {
         <Toolbar />
         {isLoggedIn &&
           <Routes>
-            <Route path='/' element={<MainPage/>}/>
+            <Route path='/' element={<BlanksPage/>}/>
             <Route path='/blanks-list' element={<BlanksPage/>}/>
             <Route path='/blank' element={<BlankPage/>}/>
             <Route path='/calculation' element={<CalculationPage/>}/>
@@ -142,6 +151,7 @@ export function App(props: Props) {
             <Route path='/group-expertise' element={<GroupExpertisePage/>}/>
             <Route path='/group-expertise/invitations' element={<InvitationsPage/>}/>
             <Route path='/group-expertise/invitation' element={<InvitationAccept/>}/>
+            <Route path='/group-expertise/result' element={<GroupResultPage/>}/>
           </Routes>
         }
         {!isLoggedIn && <AuthPage/>}

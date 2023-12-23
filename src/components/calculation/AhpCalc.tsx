@@ -111,17 +111,35 @@ export function AhpCalc() {
 
     const saveItems = (i: number, j: number) => {
         if (matrixOutputMap.get(inputItemMatrix[activeStep][i][j])) {
-            blankCopy = JSON.parse(JSON.stringify(currentBlankAhp));
-            blankCopy.blank.criteriaItemRank[activeStep][i + j - 1][2] = matrixOutputMap.get(inputItemMatrix[activeStep][i][j]);
-            calculate(blankCopy)
+            let c = 0;
+            let input = inputItemMatrix.slice();
+            let blankC = JSON.parse(JSON.stringify(currentBlankAhp)) 
+            for (let i = 0; i < currentBlank!.blank.items.length; i++) {
+                for (let j = i + 1; j < currentBlank!.blank.items.length; j++) {
+                    blankC.blank.criteriaItemRank[activeStep][c][2] = input[activeStep][i][j]
+                    c++
+                }
+            }     
+            /*blankCopy = JSON.parse(JSON.stringify(currentBlankAhp));
+            blankCopy.blank.criteriaItemRank[activeStep][i + j - 1][2] = matrixOutputMap.get(inputItemMatrix[activeStep][i][j]);*/
+            calculate(blankC)
         } 
     }
 
     const saveCriteria = (i: number, j: number) => {
         if (matrixOutputMap.get(inputMatrix[i][j])) {
-            blankCopy = JSON.parse(JSON.stringify(currentBlankAhp));
-            blankCopy.blank.criteriaRank[i + j - 1][2] = matrixOutputMap.get(inputMatrix[i][j]);
-            calculate(blankCopy)
+            let c = 0;
+            let input = inputMatrix.slice();
+            let blankC = JSON.parse(JSON.stringify(currentBlankAhp)) 
+            for (let i = 0; i < currentBlank!.blank.criteria.length; i++) {
+                for (let j = i + 1; j < currentBlank!.blank.criteria.length; j++) {
+                    blankC.blank.criteriaRank[c][2] = input[i][j]
+                    c++
+                }
+            }   
+            /*blankCopy = JSON.parse(JSON.stringify(currentBlankAhp));
+            blankCopy.blank.criteriaRank[i + j - 1][2] = matrixOutputMap.get(inputMatrix[i][j]);*/
+            calculate(blankC)
         }
     }
 
@@ -142,15 +160,15 @@ export function AhpCalc() {
             for (let i = 0; i < matrix.length; i++) {
                 for (let j = i; j < matrix.length; j++) {
                     if (i != j) {
-                        matrix[i].push(matrixInputMap.get(currentBlankAhp.blank.criteriaRank[c][2]));
-                        matrix[j].push(matrixReverseMap.get(matrixInputMap.get(currentBlankAhp.blank.criteriaRank[c][2])!.toString()));
+                        matrix[i].push(matrixInputMap.get(Number(currentBlankAhp.blank.criteriaRank[c][2])));
+                        matrix[j].push(matrixReverseMap.get(matrixInputMap.get(Number(currentBlankAhp.blank.criteriaRank[c][2]))!.toString()));
                         c++;
                     } else {
                         matrix[i].push('1');
                     }    
                 }
             }
-            for (let i = 0; i < (currentBlankAhp.blank.items.length ?? 0); i++) {;
+            for (let i = 0; i < (currentBlankAhp.blank.criteria.length ?? 0); i++) {;
                 for (let j = 0; j < (currentBlankAhp.blank.items.length ?? 0); j++) {
                     itemMatrix[i].push([])
                 }
@@ -160,8 +178,8 @@ export function AhpCalc() {
                 for (let j = 0; j < itemMatrix[i].length; j++) {
                     for (let q = j; q < itemMatrix[i].length; q++) {
                         if (q != j) {
-                            itemMatrix[i][j].push(matrixInputMap.get(currentBlankAhp.blank.criteriaItemRank[i][c][2]));
-                            itemMatrix[i][q].push(matrixReverseMap.get(matrixInputMap.get(currentBlankAhp.blank.criteriaItemRank[i][c][2])!.toString()));
+                            itemMatrix[i][j].push(matrixInputMap.get(Number(currentBlankAhp.blank.criteriaItemRank[i][c][2])));
+                            itemMatrix[i][q].push(matrixReverseMap.get(matrixInputMap.get(Number(currentBlankAhp.blank.criteriaItemRank[i][c][2]))!.toString()));
                             c++;
                         } else {
                             itemMatrix[i][j].push('1');

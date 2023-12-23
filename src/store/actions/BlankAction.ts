@@ -36,6 +36,48 @@ export const getBlanks = (userId: string | undefined) => {
     }
 }
 
+export const getInvitations = (userId: string | undefined) => {
+    return (dispatch: AppDispatch) => {
+        dispatch(blanksSlice.actions.fetching());
+        axios.get(`blanks/invitations/${userId}`).then(res => {
+            dispatch(blanksSlice.actions.gotInvitations(res.data));
+        }).catch(res => {
+            errorAlert(res.response.data.message);
+            console.log(res);
+            dispatch(blanksSlice.actions.error(res.data.message))
+        })
+    }
+}
+
+export const acceptInvitation = (id: string | undefined, userId: string | undefined) => {
+    return (dispatch: AppDispatch) => {
+        dispatch(blanksSlice.actions.fetching());
+        axios.get(`invitations/accept/${id}`).then(res => {
+            dispatch(blanksSlice.actions.success());
+            successAlert();
+            dispatch(getBlanks(userId));
+            dispatch(getInvitations(userId));
+        }).catch(res => {
+            errorAlert(res.response.data.message);
+            console.log(res);
+            dispatch(blanksSlice.actions.error(res.data.message))
+        })
+    }
+}
+
+export const declineInvitation = (id: string | undefined) => {
+    return (dispatch: AppDispatch) => {
+        dispatch(blanksSlice.actions.fetching());
+        axios.get(`invitations/decline/${id}`).then(res => {
+            successAlert();
+        }).catch(res => {
+            errorAlert(res.response.data.message);
+            console.log(res);
+            dispatch(blanksSlice.actions.error(res.data.message))
+        })
+    }
+}
+
 export const deleteBlank = (id: string | undefined) => {
     return (dispatch: AppDispatch) => {
         dispatch(blanksSlice.actions.fetching());
@@ -53,6 +95,17 @@ export const editBlank = (changes: any, id: string | undefined) => {
     return (dispatch: AppDispatch) => {
         axios.put(`blanks/${id}`, changes).then((res) => {
             
+            successAlert();
+            dispatch(blankSlice.actions.complete());
+        }).catch(res => {
+            errorAlert(res.response.data.message);
+        }) 
+    }
+}
+
+export const confirmBlank = (id: string | undefined) => {
+    return (dispatch: AppDispatch) => {
+        axios.put(`blanks/confirm/${id}`).then((res) => {
             successAlert();
             dispatch(blankSlice.actions.complete());
         }).catch(res => {

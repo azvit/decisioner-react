@@ -21,7 +21,10 @@ export const getOptions = (data: any) => {
         },
         legend: {
             top: '5%',
-            left: 'center'
+            left: 'center',
+            textStyle: {
+                fontSize: 16
+            }
         },
         series: [
             {
@@ -34,10 +37,9 @@ export const getOptions = (data: any) => {
                 borderColor: '#fff',
                 borderWidth: 2
             },
-            label: {
-                show: false,
-                position: 'center'
-            },
+            label: {position: 'inside', formatter: function(d: {value: number; }) {
+                return d.value.toFixed(2);
+              }, color:'black',  fontSize:18},
             emphasis: {
                 label: {
                 show: true,

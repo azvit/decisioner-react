@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "../hook/redux";
 import { IBlank } from "../models/models";
 import Moment from 'react-moment';
 import { useNavigate } from "react-router-dom";
-import { deleteBlank, editBlank, getBlanks, resetBlank, setBlank } from "../store/actions/BlankAction";
+import { acceptInvitation, confirmBlank, declineInvitation, deleteBlank, editBlank, getBlanks, getInvitations, resetBlank, setBlank } from "../store/actions/BlankAction";
 import { questionModal } from "../swal";
 
 
@@ -16,9 +16,12 @@ export function BlanksPage() {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { userId } = useAppSelector(state => state.auth);
-    const { blanks, loading, error } = useAppSelector(state => state.blanks);
-    const [blankList, setBlankList] = useState(blanks ?? [])
+    const { blanks, invitations, loading, error } = useAppSelector(state => state.blanks);
+    const { currentBlank } = useAppSelector(state => state.blank)
+    const [blankList, setBlankList] = useState(blanks ?? []);
+    const [invitationList, setInvitationList] = useState(invitations ?? []);
     const { completed } = useAppSelector(state => state.blank)
+    let invitationC = [];
 
     const newBlank = () => {
         dispatch(resetBlank());
@@ -51,10 +54,10 @@ export function BlanksPage() {
         })
     }
 
-    const confirmBlank = (index: number) => {
+    const confBlank = (index: number) => {
         questionModal(t("blank_confirm_modal")).then(res => {
             if (res.isConfirmed) {
-                dispatch(editBlank({isClosed: true}, blankList[index]._id));
+                dispatch(confirmBlank(blankList[index]._id));
                 setTimeout(() => {
                     dispatch(getBlanks(userId))
                 }, 500)
@@ -63,9 +66,32 @@ export function BlanksPage() {
         })
     }
 
+    const invitationAccept = (index: number) => {
+        questionModal('Прийняти запрошення на цю експертизу?').then(res => {
+            if (res.isConfirmed) {
+                dispatch(acceptInvitation(invitationList[index]._id, userId));
+                dispatch(getBlanks(userId))
+                dispatch(getInvitations(userId));
+                invitationC = JSON.parse(JSON.stringify(invitationList));
+                delete invitationC[index];
+                setInvitationList(invitationC);
+            }
+        })
+    }
+
+    const invitationDecline = (index: number) => {
+        questionModal('Відмовитись від запрошення на цю експертизу?').then(res => {
+            if (res.isConfirmed) {
+                dispatch(declineInvitation(invitationList[index]._id));
+                dispatch(getInvitations(userId));
+            }
+        })
+    };
+
     useEffect(() => {
         dispatch(resetBlank());
-        dispatch(getBlanks(userId));  
+        dispatch(getBlanks(userId)); 
+        dispatch(getInvitations(userId));
     }, []);
 
     useEffect(() => {
@@ -77,6 +103,7 @@ export function BlanksPage() {
 
     useEffect(() => {
         setBlankList(blanks);
+        setInvitationList(invitations)
     }, [blanks])
 
     return(
@@ -106,7 +133,7 @@ export function BlanksPage() {
                                         <CardActions>
                                             <Button onClick={() => {goToBlank(index)}} variant="contained" size="small"><Edit/>{t('blank_item_edit_button')}</Button>
                                             <Button onClick={() => {blankDelete(index)}} variant="contained" size="small"><Delete/>{t('blank_item_delete_button')}</Button>
-                                            <Button onClick={() => {confirmBlank(index)}} variant="contained" size="small">{t('blank_item_confirm_button')}</Button>
+                                            <Button onClick={() => {confBlank(index)}} variant="contained" size="small">{t('blank_item_confirm_button')}</Button>
                                         </CardActions>
                                     
                                 </Card>
@@ -118,6 +145,30 @@ export function BlanksPage() {
             <div className="sm:w-[50%] border shadow-md text-center">
                 {
                     loading && <CircularProgress/>
+                }
+                {
+                    (!error && invitationList) &&
+                    invitationList.map((invitation, index) => 
+                    <div key={invitation._id}> 
+                                <Card variant="outlined" sx={{
+                                    backgroundColor: `#d9f99d`
+                                }}>
+                                    <CardContent>
+                                        <Typography variant="h5" component="div">
+                                            Запрошення на експертизу "{invitation.expertiseName}"
+                                        </Typography>
+                                        <Typography>
+                                            {t('blank_item_creation_date')}<Moment format="DD.MM.YYYY">{invitation.creationDate}</Moment>
+                                        </Typography>
+                                    </CardContent>
+                                        <CardActions> 
+        
+                                        <Button onClick={() => {invitationAccept(index)}} variant="contained" size="small"><Delete/>Прийняти</Button>
+                                            <Button onClick={() => {invitationDecline(index)}} variant="contained" size="small"><Delete/>Відмовитись</Button>
+                                        </CardActions>  
+                                </Card>
+                            
+                        </div> )
                 }
                 { (!error && blankList) &&
                     blankList.map((blank, index) =>

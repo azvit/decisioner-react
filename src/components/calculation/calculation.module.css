@@ -2,6 +2,10 @@
     @apply w-[39%] float-left  m-1 text-left text-base p-1 shadow-md
 }
 
+.groupDescriptionWindow {
+    @apply w-[99%] float-left  m-1 text-left text-base p-1 shadow-md
+}
+
 .inlineText {
     @apply font-bold inline
 }
@@ -44,6 +48,10 @@
 
 .tableMatrix {
     @apply border-dark-blue mt-1 border m-auto text-center
+}
+
+.tableExpW {
+    @apply border-dark-blue w-16 mt-1 border m-auto text-center
 }
 
 .tableMatrixCellInput {

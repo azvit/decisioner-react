@@ -161,7 +161,7 @@ export function InvitationsPage() {
       </Table>
       <TablePagination
         component="div"
-        rowsPerPageOptions={[1,2,3]}
+        rowsPerPageOptions={[5,10,25]}
         count={count}
         page={page}
         onPageChange={handleChangePage}

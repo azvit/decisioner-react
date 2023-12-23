@@ -75,7 +75,8 @@ export interface BlankEvaluations {
     itemsDescription: string[],
     criteriaDescription: string[],
     criteriaRank: any[],
-    criteriaItemRank: any[][] 
+    criteriaItemRank: any[][]
+    rankedScores: any[] 
 }
 
 interface ErrorContext {

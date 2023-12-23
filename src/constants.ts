@@ -23,7 +23,8 @@ export const METHODS = [
 ];
 
 export const SINGLE_FACTOR_METHODS = [
-    RANGE_METHOD
+    RANGE_METHOD,
+    NORM_METHOD
 ]
 
 export const RANGE_METHOD_MODES = {
@@ -32,7 +33,7 @@ export const RANGE_METHOD_MODES = {
 }
 
 export const TABLE_INIT = {
-    LIMIT: 1,
+    LIMIT: 10,
     SKIP: 0,
     SEARCH: '',
     FILTER: ''

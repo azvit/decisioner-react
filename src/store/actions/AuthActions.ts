@@ -41,6 +41,24 @@ export const signIn = (authData: AuthData) => {
     }
 }
 
+export const getUser = () => {
+    return (dispatch: AppDispatch) => {
+        axios.post<AuthResponse>('user/').then(res => {
+            dispatch(authSlice.actions.loginSuccess({
+                token: res.data.token,
+                role: res.data.role,
+                expiresIn: res.data.expiresIn,
+                user: res.data.user
+            }));
+        }).catch(err => {
+            dispatch(authSlice.actions.fetchError({
+                message: err.response.data.message
+            }))
+        })
+    }
+}
+
+
 export const signUp = (signUpData: SignUpData) => {
     return async (dispatch: AppDispatch) => {
         try {

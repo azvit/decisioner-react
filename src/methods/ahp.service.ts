@@ -10,6 +10,7 @@ export const ahpCalc = async(input: BlankEvaluations | undefined) => {
   ahpData = input;
   ahpContext.addItems(ahpData?.items);
   ahpContext.addCriteria(ahpData?.criteria);
+  console.log('service ahp gets this');
   console.log(ahpData);
     for (let i = 0; i < (ahpData?.criteriaItemRank.length??0); i++) {
       ahpContext.rankCriteriaItem(ahpData?.criteria[i], ahpData?.criteriaItemRank[i]);

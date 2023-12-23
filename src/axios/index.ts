@@ -5,7 +5,7 @@ const token = () => localStorage.getItem(TOKEN_KEY)
 
 let authToken =  token()
 const instance = axios.create({
-    baseURL: process.env.REACT_APP_BASE_URl,
+    baseURL: 'http://localhost:8080',
 });
 
 instance.interceptors.request.use(async (req:any) => {

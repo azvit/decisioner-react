@@ -55,6 +55,10 @@ export const authSlice = createSlice({
             state.loading = false;
             state.error = action.payload.message;
         },
+        gotUser(state, action: PayloadAction<IUser>) {
+            state.user = action.payload;
+            state.userId = action.payload._id
+        },
         logout(state) {
             localStorage.clear();
             state.isLoggedIn = false;

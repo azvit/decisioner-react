@@ -29,16 +29,7 @@ export function Navigation()  {
           <Divider className='bg-white'/>
           {isLoggedIn && 
             <List>
-                <ListItem component={Link} to='/'  disablePadding className='hover:bg-blue-800'>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <Home style={{ color: 'white' }}/>
-                        </ListItemIcon>
-                        <ListItemText>
-                            {t('navigation_main_page')}
-                        </ListItemText>
-                    </ListItemButton>
-                </ListItem>
+            
                 <ListItem disablePadding className='hover:bg-blue-800'>
                     <ListItemButton>
                         <ListItemIcon>
